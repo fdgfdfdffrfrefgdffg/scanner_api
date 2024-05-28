@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-o-xan11l!0jj@iker)tsdvqqa7wu1ap*c&#$lip9mamx1p&i4n
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -67,7 +67,8 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware'
 ]
 CORS_ALLOW_ALL_ORIGINS = True
-
+CORS_ALLOW_CREDENTIALS = True
+CORS_ORIGIN_ALLOW_ALL = True
 ROOT_URLCONF = 'maktab_api.urls'
 
 TEMPLATES = [
