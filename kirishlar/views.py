@@ -42,7 +42,7 @@ class ExcelReportAPIView(APIView):
             except: pass
 
         
-        documents_path = os.path.join(os.path.expanduser('~'), 'Documents', 'report.xlsx')
+        documents_path = 'report.xlsx'
 
         for column in ws.columns:
             max_length = 0
