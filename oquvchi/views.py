@@ -41,8 +41,8 @@ class FaceCompareView(APIView):
             rasm_file = url_link
 
             # Face++ API sozlamalari
-            api_key = '_CR6B4vjRURT382BuHPZU4xlTCZ068Es'
-            api_secret = 'DmWV0RfNXgBbLozKmrgTd3AcymKWHGqn'
+            api_key = 'OmVE9_5h_n4kizEQTaN9NKrG1HaBoUZu'
+            api_secret = 'Wndy2025p0Vgl42WsU1W43dc6yZRMwK3'
             app_ = FacePP(api_key=api_key, api_secret=api_secret)
             res = {"topilganlar": []}
             # O'quvchilarni tekshirish
