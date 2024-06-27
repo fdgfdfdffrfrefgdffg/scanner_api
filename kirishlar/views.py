@@ -21,26 +21,29 @@ class ExcelReportAPIView(APIView):
     def get(self, request, maktab, kun):
         days = int(kun)
         start_date = timezone.now() - timedelta(days=days)
-        records = Kirish.objects.filter(sana__gte=start_date)
         wb = Workbook()
         ws = wb.active
         
         ws["A1"] = "Maktab"
         ws["B1"] = "Sinf"
         ws["C1"] = "Ism-familya"
-        ws["D1"] = "Sana"
-        ws["E1"] = "Vaqt"
-
-        for i, row in enumerate(records.values_list(), start=2): 
-            try:
-                oquvchi = Oquvchi.objects.get(pk=row[0])
-                ws[f"A{i}"] = oquvchi.maktab
-                ws[f"B{i}"] = oquvchi.sinf
-                ws[f"C{i}"] = oquvchi.ism_familya
-                ws[f"D{i}"] = row[2]
-                ws[f"E{i}"] = row[3]
-            except: pass
-
+        ws["D1"] = "Telefon raqam"
+        ws["E1"] = "Manzil"
+        ws["F1"] = "Sana"
+        ws["G1"] = "Vaqt"
+        i = 2
+        for row in Kirish.objects.values_list(): 
+                print( row[2], datetime.now().date() - timedelta(days=days),  row[2] >= datetime.now().date() - timedelta(days=days))
+                oquvchi = Oquvchi.objects.get(pk=row[1]) 
+                if oquvchi.maktab == maktab and row[2] >= datetime.now().date() - timedelta(days=days):
+                    ws[f"A{i}"] = oquvchi.maktab
+                    ws[f"B{i}"] = oquvchi.sinf
+                    ws[f"C{i}"] = oquvchi.ism_familya
+                    ws[f"D{i}"] = oquvchi.phone
+                    ws[f"E{i}"] = oquvchi.manzil
+                    ws[f"F{i}"] = row[2]
+                    ws[f"G{i}"] = row[3]
+                    i += 1
         
         documents_path = 'report.xlsx'
 

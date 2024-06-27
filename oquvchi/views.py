@@ -1,4 +1,10 @@
-from django.shortcuts import render
+from rest_framework.parsers import FileUploadParser
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from rest_framework import status
+from django.core.files.base import ContentFile
+from django.core.files.storage import default_storage
+import requests
 from oquvchi.models import Oquvchi
 from oquvchi.serializer import OquvchiSerializer
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView, ListAPIView
@@ -7,9 +13,8 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from .models import Oquvchi
-from oquvchi.serializer import OquvchiSerializer
 from facepplib import FacePP, exceptions
-from oquvchi.serializer import LinkSerializer
+from oquvchi.serializer import ImageUploadSerializer
 
 class AddOrGet(ListCreateAPIView):
     queryset = Oquvchi.objects.all()
@@ -31,44 +36,49 @@ class GetMaktabAndSinf(ListAPIView):
 
     lookup_field = ["maktab", "sinf"]
 
-
 class FaceCompareView(APIView):
-    def post(self, request, *args, **kwargs):
-        print("Test")
-        serializer = LinkSerializer(data=request.data)
+    parser_classes = (FileUploadParser,)
+
+    def get(self, request, *args, **kwargs):    
+        return Response({"message": "Bu yerga faqat post qiling."})
+    def post(self, request, *args, **kwargs):    
+        serializer = OquvchiSerializer(data=request.data)
         if serializer.is_valid():
-            url_link = serializer.validated_data['url_link']
-            rasm_file = url_link
+            rasm_file = request.FILES['rasm']
+            upload_url = 'https://telegra.ph/upload'
+            files = {'file': (rasm_file.name, rasm_file, rasm_file.content_type)}
+            response = requests.post(upload_url, files=files)
+            if response.status_code == 200:
+                response_data = response.json()
+                telegraph_url = 'https://telegra.ph' + response_data[0]['src']
+                serializer.save(face_url=telegraph_url)
+                api_key = 'hRKyY_ca3CmuOl4BVYAFa1D1cETKckFT'
+                api_secret = 'Tn0KO__Zes3bD_Nxpoqgs4L8Wwok7rax'
+                app_ = FacePP(api_key=api_key, api_secret=api_secret)
+                res = {"topilganlar": []}
+                # O'quvchilarni tekshirish
+                for oquvchi in Oquvchi.objects.all():
+                    try:
+                        # Face++ compare funksiyasini chaqirish
+                        cmp_ = app_.compare.get(image_url1=rasm_file, image_url2="https://maktab-davomat.uz/"+ oquvchi.face_url)
 
-            # Face++ API sozlamalari
-            api_key = 'OmVE9_5h_n4kizEQTaN9NKrG1HaBoUZu'
-            api_secret = 'Wndy2025p0Vgl42WsU1W43dc6yZRMwK3'
-            app_ = FacePP(api_key=api_key, api_secret=api_secret)
-            res = {"topilganlar": []}
-            # O'quvchilarni tekshirish
-            for oquvchi in Oquvchi.objects.all():
-                try:
-                    # Face++ compare funksiyasini chaqirish
-                    cmp_ = app_.compare.get(image_url1=rasm_file, image_url2=oquvchi.face_url)
+                        # Agar yuzlar mos kelsa, o'quvchi ma'lumotlarini qaytarish
+                        if cmp_.confidence > 70:
+                            res["topilganlar"].append({
+                                "ism_familya": oquvchi.ism_familya,
+                                "sinf": oquvchi.sinf,
+                                "maktab": oquvchi.maktab,
+                                "Telefon_raqam": oquvchi.phone,
+                                "manzil": oquvchi.manzil,
+                            })
 
-                    # Agar yuzlar mos kelsa, o'quvchi ma'lumotlarini qaytarish
-                    if cmp_.confidence > 70:
-                        res["topilganlar"].append({
-                            "ism_familya": oquvchi.ism_familya,
-                            "sinf": oquvchi.sinf,
-                            "maktab": oquvchi.maktab
-                        })
-    
-                except exceptions.BaseFacePPError as e:
-                    # Agar Face++ da xato bo'lsa, xato xabarini qaytarish
-                    return Response({"message": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+                    except exceptions.BaseFacePPError as e:
+                        # Agar Face++ da xato bo'lsa, xato xabarini qaytarish
+                        return Response({"message": str(e), "images":f"{rasm_file} = {oquvchi.face_url}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+                else:
+                    return Response(res) if res else Response({"message": "O'xshash yuz topilmadi."}, status=status.HTTP_404_NOT_FOUND)
             else:
-                return Response(res)
-            # Agar hech qaysi yuz mos kelmasa, xabar qaytarish
-            return Response({"message": "O'xshash yuz topilmadi."}, status=status.HTTP_404_NOT_FOUND)
+                return Response(response.json(), status=status.HTTP_400_BAD_REQUEST)
 
-    
-        else:
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    
+            

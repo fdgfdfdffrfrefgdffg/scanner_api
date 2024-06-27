@@ -49,10 +49,15 @@ INSTALLED_APPS = [
     "corsheaders"
 ]
 REST_FRAMEWORK = {
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.AllowAny',
-    ]
-}
+       'DEFAULT_AUTHENTICATION_CLASSES': [
+           'rest_framework.authentication.TokenAuthentication',
+           # 'rest_framework.authentication.SessionAuthentication' # Bu qatorni olib tashlang
+       ],
+       'DEFAULT_PERMISSION_CLASSES': [
+           'rest_framework.permissions.AllowAny',
+       ]
+   }
+   
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
