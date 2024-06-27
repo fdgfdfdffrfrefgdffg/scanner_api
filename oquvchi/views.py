@@ -65,7 +65,6 @@ class FaceCompareView(APIView):
                     # try:
                         # Face++ compare funksiyasini chaqirish
                         face_url = "https://maktab-davomat.uz/"+ oquvchi.face_url.path
-                        print(face_url)
                         cmp_ = app_.compare.get(image_url1=img_path, image_url2=face_url)
 
 
@@ -83,7 +82,7 @@ class FaceCompareView(APIView):
                 return Response(res) if res else Response({"message": "O'xshash yuz topilmadi."}, status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
                 # Agar Face++ da xato bo'lsa, xato xabarini qaytarish
-                return Response({"message": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+                return Response({"message": str(e), "url": face_url}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
             
         return Response({"Message": "Rasm yuborilmagan"}, status=status.HTTP_400_BAD_REQUEST)
             
