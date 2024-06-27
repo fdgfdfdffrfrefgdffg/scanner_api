@@ -64,7 +64,7 @@ class FaceCompareView(APIView):
                 for oquvchi in Oquvchi.objects.all():
                     # try:
                         # Face++ compare funksiyasini chaqirish
-                        face_url = "https://maktab-davomat.uz/"+ oquvchi.face_url.path[66:]
+                        face_url = "https://maktab-davomat.uz/"+ oquvchi.face_url.path[40:]
                         cmp_ = app_.compare.get(image_url1=img_path, image_url2=face_url)
 
 
