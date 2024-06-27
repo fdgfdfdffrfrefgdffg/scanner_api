@@ -8,8 +8,5 @@ class Oquvchi(models.Model):
     phone = models.CharField(max_length=15)
     manzil = models.CharField(max_length=100)
 
-    def get_image_filename(instance, filename):
-        id = instance.pk  # Obyektning primarniy kaliti (id) 
-        return f"media/{id}/{filename}"
-
-    face_url = models.ImageField(upload_to="media")
+    face_data = models.TextField()
+    
