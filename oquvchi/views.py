@@ -79,7 +79,7 @@ class FaceCompareView(APIView):
             else:
                 os.remove(img_path)
                 return Response(res) if res else Response({"message": "O'xshash yuz topilmadi."}, status=status.HTTP_404_NOT_FOUND)
-        except exceptions.BaseFacePPError as e:
+        except Exception as e:
                 # Agar Face++ da xato bo'lsa, xato xabarini qaytarish
                 return Response({"message": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
             
