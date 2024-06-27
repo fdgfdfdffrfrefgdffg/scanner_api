@@ -46,26 +46,28 @@ class FaceCompareView(APIView):
     def get(self, request, *args, **kwargs):    
         return Response({"message": "Bu yerga faqat post qiling."})
     def post(self, request, *args, **kwargs):   
-        if request.method == 'POST':
-            image_file = request.FILES.get('file')
-            if image_file:
-                # Faylni o'qish
-                image_content = image_file.read()
-                # Faylning nomi
-                image_name = image_file.name
-                # Faylning turi (mimetype)
-                image_type = image_file.content_type
-                return Response({
-                    'message': 'Rasm olingan',
-                    'image_name': image_name,
-                    'image_type': image_type,
-                    'image_content': image_content,
-                })
+        try:
+            if request.method == 'POST':
+                image_file = request.FILES.get('file')
+                if image_file:
+                    # Faylni o'qish
+                    image_content = image_file.read()
+                    # Faylning nomi
+                    image_name = image_file.name
+                    # Faylning turi (mimetype)
+                    image_type = image_file.content_type
+                    return Response({
+                        'message': 'Rasm olingan',
+                        'image_name': image_name,
+                        'image_type': image_type,
+                        'image_content': image_content,
+                    })
+                else:
+                    return Response({'error': 'Fayl topilmadi'}, status=400)
             else:
-                return Response({'error': 'Fayl topilmadi'}, status=400)
-        else:
-            return Response({'error': "Noto'g'ri so'rov turi"}, status=400)
-
+                return Response({'error': "Noto'g'ri so'rov turi"}, status=400)
+        except Exception as e:
+            return Response({"message": str(e)})
         # try:
         #     if request.FILES["file"]:
             
