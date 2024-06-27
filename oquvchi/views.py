@@ -46,8 +46,9 @@ class FaceCompareView(APIView):
     def get(self, request, *args, **kwargs):    
         return Response({"message": "Bu yerga faqat post qiling."})
     def post(self, request, *args, **kwargs):   
-        if request.FILES["file"]:
-            try:
+        try:
+            if request.FILES["file"]:
+            
                 rasm = request.FILES["file"]
                 img_path = f"media/{time()}{rasm.name}"
                 
@@ -75,12 +76,12 @@ class FaceCompareView(APIView):
                                 "Telefon_raqam": oquvchi.phone,
                                 "manzil": oquvchi.manzil,
                             })
-
-            except exceptions.BaseFacePPError as e:
-                # Agar Face++ da xato bo'lsa, xato xabarini qaytarish
-                return Response({"message": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
             else:
                 os.remove(img_path)
                 return Response(res) if res else Response({"message": "O'xshash yuz topilmadi."}, status=status.HTTP_404_NOT_FOUND)
+        except exceptions.BaseFacePPError as e:
+                # Agar Face++ da xato bo'lsa, xato xabarini qaytarish
+                return Response({"message": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            
         return Response({"Message": "Rasm yuborilmagan"}, status=status.HTTP_400_BAD_REQUEST)
             
