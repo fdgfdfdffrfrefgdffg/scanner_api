@@ -32,10 +32,18 @@ class GetMaktab(ListAPIView):
     queryset = Oquvchi.objects.all()
     serializer_class = OquvchiSerializer
 
+    def get_queryset(self):
+        maktab = self.kwargs.get('maktab')
+        return Kirish.objects.filter(oquvchi_id=maktab)
+
     lookup_field = "maktab"
 
 class GetMaktabAndSinf(ListAPIView):
     queryset = Oquvchi.objects.all()
     serializer_class = OquvchiSerializer
-
     lookup_field = ["maktab", "sinf"]
+
+    def get_queryset(self):
+        maktab = self.kwargs.get('maktab')
+        sinf = self.kwargs.get('sinf')
+        return Kirish.objects.filter(oquvchi_id=maktab, sinf=sinf)
