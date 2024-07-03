@@ -84,8 +84,12 @@ class UpdateOrDel(RetrieveUpdateDestroyAPIView):
 class GetOquvchi(ListAPIView):
     queryset = Kirish.objects.all()
     serializer_class = KirishSerializer
-
     lookup_field = "oquvchi_id"
+
+    def get_queryset(self):
+        oquvchi_id = self.kwargs.get('oquvchi_id')
+        return Kirish.objects.filter(oquvchi_id=oquvchi_id)
+
 
 class GetSana(RetrieveUpdateDestroyAPIView):
     queryset = Kirish.objects.all()
