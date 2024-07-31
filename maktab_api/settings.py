@@ -43,10 +43,10 @@ INSTALLED_APPS = [
     "ega",
     "maktabadmin",
     "kirishlar",
-
     "rest_framework",
     "drf_yasg",
-    "corsheaders"
+    "corsheaders",
+    "chiqish"
 ]
 REST_FRAMEWORK = {
        'DEFAULT_AUTHENTICATION_CLASSES': [
@@ -79,7 +79,7 @@ ROOT_URLCONF = 'maktab_api.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / "templates"],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

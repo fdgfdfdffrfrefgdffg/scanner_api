@@ -9,3 +9,14 @@ class OquvchiSerializer(ModelSerializer):
     class Meta:
         model = Oquvchi
         fields = "__all__"
+
+class OquvchiDataSerializer(ModelSerializer):
+    class Meta:
+        model = Oquvchi
+        fields = ["pk", "ism_familya", "sinf", "maktab", "phone", "manzil"]
+
+class OquvchiImgSerializer(ModelSerializer):
+    class Meta:
+        model = Oquvchi
+        fields = ["pk", "face_data", "face_img"]
+

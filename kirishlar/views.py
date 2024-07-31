@@ -10,12 +10,26 @@ from datetime import datetime, timedelta
 from django.utils import timezone
 from rest_framework.views import APIView
 from rest_framework.response import Response
-
+from rest_framework import status
 import os
 from django.http import HttpResponse
 from openpyxl import Workbook
 from openpyxl.utils import get_column_letter
 # from openpyxl.writer.excel import save_virtual_workbook
+
+
+class KirishCreateView(APIView):
+    def post(self, request, format=None):
+        serializer = KirishSerializer(data=request.data)
+        if serializer.is_valid():
+            oquvchi_id = serializer.validated_data['oquvchi_id']
+            sana = serializer.validated_data['sana']
+            # Oquvchi_id va sana tekshirishni bajarish
+            if Kirish.objects.filter(oquvchi_id=oquvchi_id, sana=sana).exists():
+                return Response({'error': 'Oquvchi_id va sana bir xil bo\'lmasligi kerak'}, status=status.HTTP_400_BAD_REQUEST)
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class ExcelReportAPIView(APIView):
     def get(self, request, maktab, kun):
@@ -76,6 +90,8 @@ class ExcelReportAPIView(APIView):
 class AddOrGet(ListCreateAPIView):
     queryset = Kirish.objects.all()
     serializer_class = KirishSerializer
+
+
 
 class UpdateOrDel(RetrieveUpdateDestroyAPIView):
     queryset = Kirish.objects.all()

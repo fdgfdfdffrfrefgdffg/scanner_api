@@ -5,3 +5,4 @@ class KirishSerializer(ModelSerializer):
     class Meta:
         model = Kirish
         fields = ["pk", "oquvchi_id", "sana", "vaqt"]
+

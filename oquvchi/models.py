@@ -9,4 +9,5 @@ class Oquvchi(models.Model):
     manzil = models.CharField(max_length=100)
 
     face_data = models.TextField()
-    
+    face_img = models.TextField()
+

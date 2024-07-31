@@ -1,3 +1,4 @@
+from django.shortcuts import render
 from rest_framework.parsers import FileUploadParser
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -10,7 +11,7 @@ from datetime import datetime, date
 from time import time
 import requests
 from oquvchi.models import Oquvchi
-from oquvchi.serializer import OquvchiSerializer
+from oquvchi.serializer import OquvchiSerializer, OquvchiDataSerializer, OquvchiImgSerializer
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView, ListAPIView
 
 from rest_framework.views import APIView
@@ -24,6 +25,14 @@ class AddOrGet(ListCreateAPIView):
     queryset = Oquvchi.objects.all()
     serializer_class = OquvchiSerializer
 
+class GetOquvchiData(ListAPIView):
+    queryset = Oquvchi.objects.all()
+    serializer_class = OquvchiDataSerializer
+    
+class GetOquvchiImg(ListAPIView):
+    queryset = Oquvchi.objects.all()
+    serializer_class = OquvchiImgSerializer
+    
 class UpdateOrDel(RetrieveUpdateDestroyAPIView):
     queryset = Oquvchi.objects.all()
     serializer_class = OquvchiSerializer
