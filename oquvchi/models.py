@@ -10,4 +10,4 @@ class Oquvchi(models.Model):
 
     face_data = models.TextField()
     face_img = models.TextField()
-
+ 

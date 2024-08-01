@@ -1,0 +1,47 @@
+{% extends 'main.html' %}
+{% load static %}
+
+{% block title %}
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12 col-lg-8 col-xl-8" style="position: relative; left: 18%; bottom: -30px;">
+        <div class="card">
+            <h5 style="text-align: center;">sinf malumotlari:</h5>
+            <div class="table-responsive" style="max-height: 300px; overflow-y: auto;">
+                <table class="table align-items-center table-flush table-borderless">
+                    <thead>
+                        <tr>
+                            <th>Ism familiya</th>
+                            <th>sinf</th>
+                            <th>maktab</th>
+                            <th>tell</th>
+                            <th>manzil</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for Oquvchi in oquvchi %}
+                        <tr>
+                            <td><a href="{% url 'haqida' Oquvchi.id %}">{{Oquvchi.ism_familya}}</a></td>
+                            <td><a href="{% url 'haqida' Oquvchi.id %}">{{Oquvchi.sinf}}</a></td>
+                            <td><a href="{% url 'haqida' Oquvchi.id %}">{{Oquvchi.maktab}}</a></td>
+                            <td><a href="{% url 'haqida' Oquvchi.id %}">{{Oquvchi.phone}}</a></td>
+                            <td><a href="{% url 'haqida' Oquvchi.id %}">{{Oquvchi.manzil}}</a></td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td>O'quvchilar qo'shilmagan</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+    <a href="javaScript:void();" class="back-to-top"><i class="fa fa-angle-double-up"></i> </a>
+
+</div>
+{% endblock %}

@@ -1,0 +1,66 @@
+{% extends 'main.html' %}
+
+{% block title %}
+{% endblock %}
+
+{% block content %}
+<h3>Kunlik ma'lumotlar</h3>
+
+<div class="row">
+    <div class="col-12 col-lg-8 col-xl-8">
+        <div class="card">
+            <div class="card-header">Davomat
+                <div class="card-action">
+                    <div class="dropdown">
+                    </div>
+                </div>
+            </div>
+            <div class="table-responsive"
+                style="max-height: 500px; overflow-y: auto; scroll-snap-type: proximity; scrollbar-color: green;">
+                <table class="table align-items-center table-flush table-borderless">
+                    <tr>
+                        <td><a href="{% url 'sinf' %}">1</a></td>
+                        <td style="display: flex;">
+                            <div class="bar"
+                                style="width: 90%; background-color: #00FF00; text-align: center; color: black;">
+                                94%
+                            </div>
+                            <div class="bar"
+                                style="width: 6%; background-color: yellow; text-align: center; color: black;">
+                                2%
+                            </div>
+                            <div class="bar"
+                                style="width: 4%; background-color: red; text-align: center; color: black;">
+                                1%</div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    <hr>
+
+    <div class="col-12 col-lg-8 col-xl-8">
+        <div class="row">
+            <div class="col-12 col-lg-8 col-xl-8">
+                <div style="display: flex;">
+                    <p>
+                    <div style="background-color: red; width: 20px; height: 20px;"></div> - kechikib
+                    kelgan</p>
+                </div>
+                <div style="display: flex;">
+                    <p>
+                    <div style="background-color: yellow; width: 20px; height: 20px;"></div> - kelmagan
+                    </p>
+                </div>
+                <div style="display: flex;">
+                    <p>
+                    <div style="background-color:#00FF00; width: 20px; height: 20px;"></div> - kelgan
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

@@ -1,0 +1,14 @@
+{% extends 'main.html' %}
+{% load static %}
+
+{% block title %}
+{{ haqida.ism_familya }}
+{% endblock %}
+
+{% block content %}
+<h3>{{ haqida.ism_familya }}</h3><br>
+<p>Sinfi: {{ haqida.sinf }}</p><br>
+<p>Maktab: {{ haqida.maktab }}</p><br>
+<p>Tell: {{ haqida.phone }}</p><br>
+<p>Manzil: {{ haqida.manzil }}</p><br>
+{% endblock %}

@@ -1,0 +1,208 @@
+{% extends 'main.html' %}
+{% load static %}
+
+{% block title %}
+Maktablar uchun yuzni aniqlash tizimi
+{% endblock %}
+
+{% block content %}
+
+{% for Maktab in maktab %}
+<h1 align="center">{{Maktab.Maktab_raqami}} - sonli maktab</h1>
+{% empty %}
+<h1 align="center">Maktab raqami kiritilmagan</h1>
+{% endfor %}
+
+<div class="card mt-3">
+    <div class="card-content">
+        <div class="row row-group m-0">
+            <div class="col-12 col-lg-6 col-xl-3 border-light">
+                <div class="card-body">
+                    <a>
+                        <h5 class="text-white mb-0">Kunlik<span class="float-right"><i
+                                    class="zmdi zmdi-face"></i></span>
+                        </h5>
+                    </a>
+                    <div class="progress my-3" style="height:3px;">
+                        <div class="progress-bar" style="width:45%"></div>
+                    </div>
+                    <p class="mb-0 text-white small-font">45%<span class="float-right">+5%<i
+                                class="zmdi zmdi-long-arrow-up"></i></span></p>
+                </div>
+            </div>
+            <div class="col-12 col-lg-6 col-xl-3 border-light">
+                <div class="card-body">
+                    <a>
+                        <h5 class="text-white mb-0">Haftalik<span class="float-right"><i
+                                    class="zmdi zmdi-face"></i></span>
+                        </h5>
+                    </a>
+                    <div class="progress my-3" style="height:3px;">
+                        <div class="progress-bar" style="width:52%"></div>
+                    </div>
+                    <p class="mb-0 text-white small-font">52%<span class="float-right">+20%<i
+                                class="zmdi zmdi-long-arrow-up"></i></span></p>
+                </div>
+            </div>
+            <div class="col-12 col-lg-6 col-xl-3 border-light">
+                <div class="card-body">
+                    <a>
+                        <h5 class="text-white mb-0">Oylik<span class="float-right"><i class="zmdi zmdi-face"></i></span>
+                        </h5>
+                    </a>
+
+                    <div class="progress my-3" style="height:3px;">
+                        <div class="progress-bar" style="width:86%"></div>
+                    </div>
+                    <p class="mb-0 text-white small-font">86%<span class="float-right">+16%<i
+                                class="zmdi zmdi-long-arrow-up"></i></span></p>
+                </div>
+            </div>
+            <div class="col-12 col-lg-6 col-xl-3 border-light">
+                <div class="card-body">
+                    <a>
+                        <h5 class="text-white mb-0">Yillik<span class="float-right"><i
+                                    class="zmdi zmdi-face"></i></span>
+                        </h5>
+                    </a>
+                    <div class="progress my-3" style="height:3px;">
+                        <div class="progress-bar" style="width:98%"></div>
+                    </div>
+                    <p class="mb-0 text-white small-font">99%<span class="float-right">+10% <i
+                                class="zmdi zmdi-long-arrow-up"></i></span></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12 col-lg-4 col-xl-5">
+        <form id="dataForm" style="display: none;">
+            <label for="onTime">Vaqtida kelganlar ro'yxati (%):</label>
+            <input type="number" id="onTime" name="onTime" min="0" max="100" value="80"><br>
+            <label for="absent">Kelmaganlar (%):</label>
+            <input type="number" id="absent" name="absent" min="0" max="100" value="10"><br>
+            <label for="late">Kechikkkanlar (%):</label>
+            <input type="number" id="late" name="late" min="0" max="100" value="10"><br>
+            <button type="button" onclick="updateChart()">Yangilash</button>
+        </form>
+        <div class="chart-container">
+            <canvas id="myPieChart" width="400" height="400"></canvas>
+        </div>
+        <div class="legend">
+            <div><span class="dot" style="background-color: #00FF00;"></span> Vaqtida kelganlar ro'yxati
+            </div>
+            <div><span class="dot" style="background-color: #FF0000;"></span> Kelmaganlar</div>
+            <div><span class="dot" style="background-color: #0000FF;"></span> Kechikkanlar</div>
+        </div>
+    </div>
+    <hr>
+
+    <div class="col-12 col-lg-4 col-xl-5">
+        <div id="calendar-wrapper">
+            <div id="calendar-title-bar">
+                <button id="previous-month">&lt;</button>
+                <span id="display-month-year"></span>
+                <button id="next-month">&gt;</button>
+            </div>
+            <table id="calendar-table">
+                <thead>
+                    <tr>
+                        <th>Du</th>
+                        <th>Se</th>
+                        <th>Ch</th>
+                        <th>Pa</th>
+                        <th>Ju</th>
+                        <th>Sh</th>
+                        <th>Ya</th>
+                    </tr>
+                </thead>
+                <tbody id="calendar-content">
+                    <!-- Dates will be generated by JavaScript -->
+                </tbody>
+            </table>
+        </div>
+
+
+        <div class="sinflar" style="display: flex; justify-content: space-around;">
+            {% for Maktab in maktab %}
+            <h4><a href="{% url 'sinf' %}">{{Maktab.Maktab_raqami}} - sonli maktab o'quvchilari</a></h4>
+            {% empty %}
+            <h4>Maktab o'quvchilari ro'yxati kiritilmagan</h4>
+            {% endif %}
+        </div>
+
+    </div>
+
+</div>
+{% endblock %}
+
+{% block js %}
+let chart;
+
+function updateChart() {
+const onTime = parseFloat(document.getElementById('onTime').value);
+const absent = parseFloat(document.getElementById('absent').value);
+const late = parseFloat(document.getElementById('late').value);
+
+if (onTime + absent + late !== 100) {
+alert("Foizlarning yig'indisi 100 ga teng bo'lishi kerak!");
+return;
+}
+
+const ctx = document.getElementById('myPieChart').getContext('2d');
+if (chart) {
+chart.destroy();
+}
+
+chart = new Chart(ctx, {
+type: 'pie',
+data: {
+labels: ['Vaqtida kelganlar ro\'yxati', 'Kelmaganlar', 'Kechikkanlar'],
+datasets: [{
+data: [onTime, absent, late],
+backgroundColor: ['#00FF00', '#FF0000', '#0000FF']
+}]
+},
+options: {
+responsive: true,
+plugins: {
+datalabels: {
+formatter: (value, context) => {
+return context.chart.data.labels[context.dataIndex] + ': ' + value + '%';
+},
+color: '#fff',
+backgroundColor: '#404040',
+borderRadius: 3,
+padding: 6
+},
+legend: {
+display: false
+},
+tooltip: {
+callbacks: {
+label: function (tooltipItem) {
+return tooltipItem.label + ': ' + tooltipItem.raw + '%';
+}
+}
+}
+},
+elements: {
+arc: {
+borderWidth: 1
+}
+},
+plugins: {
+'3d': {
+enabled: true,
+effect: 'tilt'
+}
+}
+}
+});
+}
+
+// Initial chart rendering when the page loads
+document.addEventListener('DOMContentLoaded', updateChart);
+{% endblock %}
