@@ -2,6 +2,7 @@ from django.shortcuts import render
 from maktab.models import Maktab
 from oquvchi.models import Oquvchi
 from django.utils import timezone
+from kirishlar.models import Kirish
 
 # Create your views here.
 def index(request):
@@ -26,19 +27,18 @@ def oquvchilar(request):
     oquvchi = Oquvchi.objects.all()
     return render(request, 'blog/oquvchilar.html', {'oquvchi':oquvchi})
 
-
 def kun(request):
-    kunlik_malumotlar = Oquvchi.objects.filter(created_at__gte=timezone.now() - timezone.timedelta(days=1))
+    kunlik_malumotlar = Kirish.objects.filter(sana__gte=timezone.now().date() - timezone.timedelta(days=1))
     jami_son = kunlik_malumotlar.count()
-    return render(request, 'blog/kun.html', {'kunlik_malumotlar': kunlik_malumotlar, 'jami_son': jami_son})
+    return render(request, 'blog/kun.html', {'kunlik_malumotlar': kunlik_malumotlar, 'jami_son': jami_son, 'oquvchi':oquvchi})
 
 def hafta(request):
-    haftalik_malumotlar = Oquvchi.objects.filter(created_at__gte=timezone.now() - timezone.timedelta(days=7))
+    haftalik_malumotlar = Kirish.objects.filter(sana__gte=timezone.now().date() - timezone.timedelta(days=7))
     jami_son = haftalik_malumotlar.count()
     return render(request, 'blog/hafta.html', {'haftalik_malumotlar': haftalik_malumotlar, 'jami_son': jami_son})
 
 def oy(request):
-    oylik_malumotlar = Oquvchi.objects.filter(created_at__gte=timezone.now() - timezone.timedelta(days=31))
+    oylik_malumotlar = Kirish.objects.filter(sana__gte=timezone.now().date() - timezone.timedelta(days=31))
     jami_son = oylik_malumotlar.count()
 
     context = {
@@ -49,7 +49,7 @@ def oy(request):
     return render(request, 'blog/oy.html', context)
 
 def yil(request):
-    yillik_malumotlar = Oquvchi.objects.filter(created_at__gte=timezone.now() - timezone.timedelta(days=365))
+    yillik_malumotlar = Kirish.objects.filter(sana__gte=timezone.now().date() - timezone.timedelta(days=365))
     jami_son = yillik_malumotlar.count()
 
     context = {

@@ -67,7 +67,7 @@ Haftalik malumotlar:
 <p>Jami: {{ jami_son }}</p>
 
 <div class="row">
-    <div class="col-12 col-lg-8 col-xl-8"  style="position: relative; left: 18%; bottom: -30px;">
+    <div class="col-12 col-lg-8 col-xl-8" style="position: relative; left: 18%; bottom: -30px;">
       <div class="card">
         <h5 style="text-align: center;">Haftalik malumotlar:</h5>
 
@@ -75,25 +75,21 @@ Haftalik malumotlar:
           <table class="table align-items-center table-flush table-borderless">
             <thead>
                 <tr>
-                    <th>Ism familiya</th>
-                    <th>Sinf</th>
-                    <th>Maktab</th>
-                    <th>Telefon</th>
-                    <th>Manzil</th>
+                    <th>O'quvchini ID</th>
+                    <th>Sana</th>
+                    <th>Vaqt</th>
                 </tr>
             </thead>
             <tbody>
                 {% for malumot in haftalik_malumotlar %}
                 <tr>
-                    <td><a href="{% url 'haqida' malumot.id %}">{{malumot.ism_familya}}</a></td>
-                    <td>{{malumot.sinf}}</td>
-                    <td>{{malumot.maktab}}</td>
-                    <td>{{malumot.phone}}</td>
-                    <td>{{malumot.manzil}}</td>
+                    <td>{{ malumot.oquvchi_id }}</td>
+                    <td>{{ malumot.sana }}</td>
+                    <td>{{ malumot.vaqt }}</td>
                 </tr>
                 {% empty %}
                 <tr>
-                    <td colspan="5">Haftalik ma'lumotlar qo'shilmagan</td>
+                    <td colspan="4">Haftalik ma'lumotlar qo'shilmagan</td>
                 </tr>
                 {% endfor %}
             </tbody>

@@ -75,21 +75,17 @@ Oylik malumotlar:
           <table class="table align-items-center table-flush table-borderless">
             <thead>
                 <tr>
-                    <th>Ism familiya</th>
-                    <th>Sinf</th>
-                    <th>Maktab</th>
-                    <th>Telefon</th>
-                    <th>Manzil</th>
+                    <th>O'quvchini id</th>
+                        <th>Sana</th>
+                        <th>Vaqt</th>
                 </tr>
             </thead>
             <tbody>
                 {% for malumot in oylik_malumotlar %}
                 <tr>
-                    <td><a href="{% url 'haqida' malumot.id %}">{{malumot.ism_familya}}</a></td>
-                    <td>{{malumot.sinf}}</td>
-                    <td>{{malumot.maktab}}</td>
-                    <td>{{malumot.phone}}</td>
-                    <td>{{malumot.manzil}}</td>
+                    <td>{{ malumot.oquvchi_id }}</td>
+                        <td>{{ malumot.sana }}</td>
+                        <td>{{ malumot.vaqt }}</td>
                 </tr>
                 {% empty %}
                 <tr>

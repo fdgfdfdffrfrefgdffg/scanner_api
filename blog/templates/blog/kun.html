@@ -67,7 +67,7 @@ Kunlik malumotlar:
 <p>Jami: {{ jami_son }}</p>
 
 <div class="row">
-    <div class="col-12 col-lg-8 col-xl-8"  style="position: relative; left: 18%; bottom: -30px;">
+    <div class="col-12 col-lg-8 col-xl-8" style="position: relative; left: 18%; bottom: -30px;">
       <div class="card">
         <h5 style="text-align: center;">Kunlik malumotlar:</h5>
 
@@ -75,25 +75,21 @@ Kunlik malumotlar:
           <table class="table align-items-center table-flush table-borderless">
             <thead>
                 <tr>
-                    <th>Ism familiya</th>
-                    <th>sinf</th>
-                    <th>maktab</th>
-                    <th>tell</th>
-                    <th>manzil</th>
+                    <th>O'quvchini ID</th>
+                    <th>Sana</th>
+                    <th>Vaqt</th>
                 </tr>
             </thead>
             <tbody>
                 {% for malumot in kunlik_malumotlar %}
                 <tr>
-                    <td><a href="{% url 'haqida' malumot.id %}">{{malumot.ism_familya}}</a></td>
-                    <td><a href="{% url 'haqida' malumot.id %}">{{malumot.sinf}}</a></td>
-                    <td><a href="{% url 'haqida' malumot.id %}">{{malumot.maktab}}</a></td>
-                    <td><a href="{% url 'haqida' malumot.id %}">{{malumot.phone}}</a></td>
-                    <td><a href="{% url 'haqida' malumot.id %}">{{malumot.manzil}}</a></td>
+                    <td>{{ malumot.oquvchi_id }}</td>
+                    <td>{{ malumot.sana }}</td>
+                    <td>{{ malumot.vaqt }}</td>
                 </tr>
                 {% empty %}
                 <tr>
-                    <td>Kunlik ma'lumotlar qo'shilmagan</td>
+                    <td colspan="4">Kunlik ma'lumotlar qo'shilmagan</td>
                 </tr>
                 {% endfor %}
             </tbody>
@@ -101,9 +97,6 @@ Kunlik malumotlar:
     </div>
 </div>
 </div>
-
-
-
 
 <a href="javaScript:void();" class="back-to-top"><i class="fa fa-angle-double-up"></i> </a>
 
