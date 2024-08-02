@@ -4,7 +4,4 @@ from django.db import models
 
 class Telegroup(models.Model):
     oquvchi_id = models.IntegerField()
-    sinf = models.CharField(max_length=5)
-    group_id = models.IntegerField()
-    topic_id = models.IntegerField()
-
+    chat_id = models.IntegerField()

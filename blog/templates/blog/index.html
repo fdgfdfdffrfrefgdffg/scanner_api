@@ -130,7 +130,7 @@ Maktablar uchun yuzni aniqlash tizimi
             <h4><a href="{% url 'sinf' %}">{{Maktab.Maktab_raqami}} - sonli maktab o'quvchilari</a></h4>
             {% empty %}
             <h4>Maktab o'quvchilari ro'yxati kiritilmagan</h4>
-            {% endif %}
+            {% endfor %}
         </div>
 
     </div>

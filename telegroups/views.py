@@ -12,16 +12,6 @@ class UpdateOrDel(RetrieveUpdateDestroyAPIView):
     queryset = Telegroup.objects.all()
     serializer_class = TelegroupSerializer
 
-class GetClassTelegroups(ListAPIView):
-    queryset = Telegroup.objects.all()
-    serializer_class = TelegroupSerializer
-
-    def get_queryset(self):
-        sinf = self.kwargs.get('sinf')
-        return Telegroup.objects.filter(sinf=sinf)
-
-    lookup_field = "sinf"
-
 class GetOquvchiIdTelegroups(ListAPIView):
     queryset = Telegroup.objects.all()
     serializer_class = TelegroupSerializer
