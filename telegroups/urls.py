@@ -1,5 +1,5 @@
 from django.urls import path
-from telegroups.views import AddOrGet, UpdateOrDel, GetClassTelegroups, GetOquvchiIdTelegroups
+from telegroups.views import AddOrGet, UpdateOrDel, GetOquvchiIdTelegroups
 
 urlpatterns = [
     path("", AddOrGet.as_view(), name="Oquvchi qo'shish yoki hammasini olish"),
