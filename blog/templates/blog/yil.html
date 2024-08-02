@@ -2,10 +2,11 @@
 {% load static %}
 
 {% block title %}
-{{ haqida.ism_familya }}
+Yillik malumotlar:
 {% endblock %}
 
 {% block content %}
+<br>
 <div class="row">
     <div class="col-12 col-lg-8 col-xl-8" style="left: 18%;">
         <div class="card">
@@ -62,11 +63,46 @@
         </div>
     </div>
 
+</div> <br><br>
+<p>Jami: {{ jami_son }}</p>
+
+<div class="row">
+    <div class="col-12 col-lg-8 col-xl-8"  style="position: relative; left: 18%; bottom: -30px;">
+      <div class="card">
+        <h5 style="text-align: center;">Yillik malumotlar:</h5>
+
+        <div class="table-responsive" style="max-height: 300px; overflow-y: auto;">
+          <table class="table align-items-center table-flush table-borderless">
+            <thead>
+                <tr>
+                    <th>Ism familiya</th>
+                    <th>Sinf</th>
+                    <th>Maktab</th>
+                    <th>Telefon</th>
+                    <th>Manzil</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for malumot in yillik_malumotlar %}
+                <tr>
+                    <td><a href="{% url 'haqida' malumot.id %}">{{malumot.ism_familya}}</a></td>
+                    <td>{{malumot.sinf}}</td>
+                    <td>{{malumot.maktab}}</td>
+                    <td>{{malumot.phone}}</td>
+                    <td>{{malumot.manzil}}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5">Yillik ma'lumotlar qo'shilmagan</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 </div>
-<br>
-<h3>{{ haqida.ism_familya }}</h3><br>
-<p>Sinfi: {{ haqida.sinf }}</p><br>
-<p>Maktab: {{ haqida.maktab }}</p><br>
-<p>Tell: {{ haqida.phone }}</p><br>
-<p>Manzil: {{ haqida.manzil }}</p><br>
+</div>
+
+<a href="javaScript:void();" class="back-to-top"><i class="fa fa-angle-double-up"></i> </a>
+
+</div>
 {% endblock %}

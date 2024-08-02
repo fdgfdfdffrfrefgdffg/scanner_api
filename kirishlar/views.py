@@ -3,6 +3,7 @@ from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIV
 from rest_framework.views import APIView
 from datetime import datetime, timedelta
 from rest_framework.response import Response
+from teleusers import Teleusers
 from kirishlar.models import Kirish
 from kirishlar.serializer import KirishSerializer
 from oquvchi.models import Oquvchi
@@ -16,6 +17,21 @@ from django.http import HttpResponse
 from openpyxl import Workbook
 from openpyxl.utils import get_column_letter
 # from openpyxl.writer.excel import save_virtual_workbook
+import requests
+
+def send_message_to_group(bot_token, chat_id, message):
+    url = f"https://api.telegram.org/bot7262740185:AAGTX7mSkoZiesQcdzDVPa3yhS8XJszlFFU/sendMessage?chat_id={chat_id}&text={message}"
+
+    response = requests.get(url)
+    response.json()["url"] = url
+    if response.status_code == 200:
+        return response.json()
+    else:
+        return response.json()
+# Bot token va guruh chat ID sifatida o'zingizning ma'lumotlaringizni kiriting
+bot_token = "7262740185:AAGTX7mSkoZiesQcdzDVPa3yhS8XJszlFFU"
+
+
 
 
 class KirishCreateView(APIView):
@@ -24,11 +40,23 @@ class KirishCreateView(APIView):
         if serializer.is_valid():
             oquvchi_id = serializer.validated_data['oquvchi_id']
             sana = serializer.validated_data['sana']
+            vaqt = serializer.validated_data['vaqt']
             # Oquvchi_id va sana tekshirishni bajarish
             if Kirish.objects.filter(oquvchi_id=oquvchi_id, sana=sana).exists():
                 return Response({'error': 'Oquvchi_id va sana bir xil bo\'lmasligi kerak'}, status=status.HTTP_400_BAD_REQUEST)
             serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            user = Teleusers.objects.get(oquvchi_id=oquvchi_id)
+            if user:
+                oquvchi = Oquvchi.objects.get(pk=oquvchi_id)
+                message = f"{oquvchi.ism_familya} maktabga keldi!\n\nsana: {sana}\nVaqt: {vaqt}"
+
+                tdata = send_message_to_group(
+                bot_token, 
+                user.chat_id, 
+                )
+
+            return Response(
+                {"chat_id": user.chat_id, "message": message, "data": tdata}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class ExcelReportAPIView(APIView):
